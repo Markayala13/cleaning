@@ -1,0 +1,14 @@
+/* Carousel Hover Effects - Simple Zoom */
+.project-new-1-outer .wt-img-effect {
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.project-new-1-outer .wt-img-effect img {
+    transition: transform 0.3s ease;
+    transform: scale(1);
+}
+
+.project-new-1-outer .wt-img-effect:hover img {
+    transform: scale(1.1);
+}
