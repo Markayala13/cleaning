@@ -1,0 +1,5 @@
+# Bloquear acceso directo a archivos
+# Solo se pueden descargar a través de download.php
+Options -Indexes
+Order Deny,Allow
+Deny from all

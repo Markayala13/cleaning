@@ -1,0 +1,25 @@
+# Protección adicional
+Options -Indexes
+
+# Bloquear acceso directo a archivos de configuración
+<FilesMatch "^(config\.php)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Permitir solo archivos PHP específicos
+<Files "login.php">
+    Allow from all
+</Files>
+
+<Files "index.php">
+    Allow from all
+</Files>
+
+<Files "logout.php">
+    Allow from all
+</Files>
+
+<Files "download.php">
+    Allow from all
+</Files>
