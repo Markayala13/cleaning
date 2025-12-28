@@ -1,0 +1,136 @@
+# Apache Configuration for SEO Optimization
+# DBest Cleaning Services LLC
+
+# Enable Rewrite Engine
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # Force HTTPS (Redirect HTTP to HTTPS)
+    RewriteCond %{HTTPS} off
+    RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+    # Force WWW or Non-WWW (Choose one - currently non-WWW)
+    RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+    RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
+
+    # Remove trailing slash (optional)
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)/$ /$1 [L,R=301]
+</IfModule>
+
+# Compression - Improve page load speed
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE text/javascript
+    AddOutputFilterByType DEFLATE text/xml
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/x-javascript
+    AddOutputFilterByType DEFLATE application/json
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE application/xhtml+xml
+    AddOutputFilterByType DEFLATE application/rss+xml
+    AddOutputFilterByType DEFLATE application/atom_xml
+    AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+
+# Browser Caching
+<IfModule mod_expires.c>
+    ExpiresActive On
+
+    # Images
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/jpg "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    ExpiresByType image/webp "access plus 1 year"
+    ExpiresByType image/x-icon "access plus 1 year"
+
+    # CSS and JavaScript
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType text/javascript "access plus 1 month"
+
+    # Fonts
+    ExpiresByType font/ttf "access plus 1 year"
+    ExpiresByType font/woff "access plus 1 year"
+    ExpiresByType font/woff2 "access plus 1 year"
+    ExpiresByType application/font-woff "access plus 1 year"
+    ExpiresByType application/font-woff2 "access plus 1 year"
+
+    # HTML (shorter cache)
+    ExpiresByType text/html "access plus 1 day"
+
+    # Default
+    ExpiresDefault "access plus 2 days"
+</IfModule>
+
+# Cache Control Headers
+<IfModule mod_headers.c>
+    # Cache CSS and JS for 1 month
+    <FilesMatch "\.(css|js)$">
+        Header set Cache-Control "max-age=2592000, public"
+    </FilesMatch>
+
+    # Cache images for 1 year
+    <FilesMatch "\.(jpg|jpeg|png|gif|svg|webp|ico)$">
+        Header set Cache-Control "max-age=31536000, public"
+    </FilesMatch>
+
+    # Don't cache HTML
+    <FilesMatch "\.(html|htm|php)$">
+        Header set Cache-Control "max-age=86400, must-revalidate"
+    </FilesMatch>
+
+    # Security Headers
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+    Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# Disable Directory Browsing
+Options -Indexes
+
+# Custom Error Pages (optional)
+ErrorDocument 404 /error-404.html
+ErrorDocument 500 /error-404.html
+
+# Protect sensitive files
+<FilesMatch "^\.">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Protect configuration files
+<FilesMatch "(\.htaccess|\.htpasswd|\.env|\.git)">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# UTF-8 Encoding
+AddDefaultCharset UTF-8
+AddCharset UTF-8 .html .css .js .xml .json .rss .atom
+
+# MIME Types
+<IfModule mod_mime.c>
+    AddType text/css .css
+    AddType text/javascript .js
+    AddType application/javascript .js
+    AddType image/svg+xml .svg .svgz
+    AddType application/font-woff .woff
+    AddType application/font-woff2 .woff2
+    AddType application/vnd.ms-fontobject .eot
+    AddType font/ttf .ttf
+    AddType font/otf .otf
+    AddType image/webp .webp
+</IfModule>
+
+# Remove ETag (optional - for better caching)
+<IfModule mod_headers.c>
+    Header unset ETag
+</IfModule>
+FileETag None
